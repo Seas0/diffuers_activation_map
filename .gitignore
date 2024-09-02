@@ -1,0 +1,32 @@
+# Python
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+*.pyi
+*.pyz
+*.pyw
+*.pyz/
+*.pyw/
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+*.egg
+*.whl
+
+# Virtual Environment
+venv/
+env/
+ENV/
+
+# Visual Studio Code
+.vscode/
+.settings/
+.vscode-ctags
+*.code-workspace
+
+# Miscellaneous
+*.log
+*.swp
+.DS_Store
