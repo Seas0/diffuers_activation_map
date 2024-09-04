@@ -121,9 +121,11 @@ def main():
     # Enable CPU offloading for the model
     pipeline.enable_model_cpu_offload()
 
-    # Custom filter function: only capture activations from layers containing 'attn' in their name
+    # Custom filter function: only capture activations from `Attention` layers
     def custom_filter_fn(layer_name: str, layer: nn.Module) -> bool:
-        return "attn" in layer_name
+        from diffusers.models.attention_processor import Attention
+
+        return isinstance(layer, Attention)
 
     activation_extractor = ActivationExtractor(
         pipeline.unet, filter_fn=custom_filter_fn
@@ -131,7 +133,7 @@ def main():
     activation_extractor.register_hooks()
 
     prompt = "A futuristic cityscape at sunset"
-    output: OrderedDict = pipeline(prompt, num_inference_steps=10)  # type: ignore
+    output: OrderedDict = pipeline(prompt, num_inference_steps=1)  # type: ignore
     images: List[PIL.Image.Image] = output["images"]
     image = images[0]
     # raise NotImplementedError()
@@ -143,7 +145,6 @@ def main():
         print(f"Layer: {layer_name}, Activation shape: {activation.shape}")
         # Visualize activation map
         activation_map = activation[0].cpu().numpy()
-        
 
     # Clean up hooks after use
     activation_extractor.clear_hooks()

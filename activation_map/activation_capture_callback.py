@@ -9,7 +9,7 @@ from activation_extractor import ActivationExtractor
 
 
 class ActivationCaptureCallback(PipelineCallback):
-    tensor_inputs: List[str] = []  # type: ignore
+    tensor_inputs: List[str] = ["latents"]  # type: ignore
 
     def __init__(
         self,
@@ -45,6 +45,7 @@ class ActivationCaptureCallback(PipelineCallback):
             callback_kwargs: (Dict[str, Any]) containing tensors like 'latents'.
         """
         activations = self.activation_extractor.get_activations().copy()
+        activations["z_latents_output"] = callback_kwargs["latents"]
         self.activations_per_timestep[int(timesteps.item())] = activations
         self.activation_extractor.clear_activations()
 
@@ -135,9 +136,11 @@ def main():
     # Enable CPU offloading for the model
     pipeline.enable_model_cpu_offload()
 
-    # Custom filter function: only capture activations from layers containing 'attn' in their name
+    # Custom filter function: only capture activations from `Attention` layers
     def custom_filter_fn(layer_name: str, layer: nn.Module) -> bool:
-        return "attn" in layer_name
+        from diffusers.models.attention_processor import Attention
+
+        return isinstance(layer, Attention)
 
     # Instantiate the callback with a model's U-Net
     callback = ActivationCaptureCallback(
