@@ -12,3 +12,5 @@ TODO:
 - [ ] Polish the callback and exporter
 - [ ] Add support for other models, like these in `transformers`, etc.
       (especially the `CLIP` model for text prompt encoder)
+- [ ] Add a proper `ActivationMap` class for managing captured activations
+- [ ] Add a hook in the pipeline to recover original image size and restore it for activation maps
