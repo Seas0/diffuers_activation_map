@@ -1,11 +1,13 @@
 import os
+from typing import Any, Callable, Dict, List, Optional, Union
+
 import numpy as np
 import torch
-from torch import nn
-from diffusers.pipelines.pipeline_utils import DiffusionPipeline
 from diffusers.callbacks import PipelineCallback
-from typing import Any, Dict, Callable, Optional, List, Union
-from activation_extractor import ActivationExtractor
+from diffusers.pipelines.pipeline_utils import DiffusionPipeline
+from torch import nn
+
+from .activation_extractor import ActivationExtractor
 
 
 class ActivationCaptureCallback(PipelineCallback):
@@ -174,7 +176,7 @@ if __name__ == "__main__":
     try:
         main()
     except Exception as e:
-        import traceback, sys, pdb, bdb, code
+        import bdb, code, pdb, sys, traceback
 
         if sys.gettrace() is not None:
             # if already in debugging mode, raise exception

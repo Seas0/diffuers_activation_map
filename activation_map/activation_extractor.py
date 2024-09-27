@@ -1,13 +1,7 @@
+from typing import Callable, Dict, List, Optional, OrderedDict, Tuple
+
 import torch
 from torch import nn
-from typing import (
-    Dict,
-    Callable,
-    Optional,
-    OrderedDict,
-    Tuple,
-    List,
-)
 
 
 class ActivationExtractor:
@@ -155,12 +149,12 @@ if __name__ == "__main__":
 
     warnings.simplefilter(action="ignore", category=FutureWarning)
 
-    import PIL
-    import PIL.Image
     import cv2
+    import matplotlib.pyplot as plt
 
     import numpy as np
-    import matplotlib.pyplot as plt
+    import PIL
+    import PIL.Image
 
     from matplotlib_inline.backend_inline import set_matplotlib_formats
 
@@ -171,7 +165,7 @@ if __name__ == "__main__":
     try:
         main()
     except Exception as e:
-        import traceback, sys, pdb, bdb, code
+        import bdb, code, pdb, sys, traceback
 
         if sys.gettrace() is not None:
             # if already in debugging mode, raise exception
